@@ -1,0 +1,12 @@
+{
+	"skins": {
+		"MainGame": "resource/eui_skins/MainGame.exml",
+		"DaYan": "resource/eui_skins/DaYan.exml"
+	},
+	"autoGenerateExmlsList": true,
+	"exmls": [
+		"resource/eui_skins/DaYan.exml",
+		"resource/eui_skins/MainGame.exml"
+	],
+	"path": "resource/default.thm.json"
+}

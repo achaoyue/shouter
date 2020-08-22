@@ -1,0 +1,60 @@
+{
+	"groups": [
+		{
+			"keys": "bg_jpg,egret_icon_png,description_json,arrow_png,arrow2_png,monster_2_json,monster_2_png,egret_png,bird_png,pig_png",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/bg.jpg",
+			"type": "image",
+			"name": "bg_jpg"
+		},
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "assets/arrow.png",
+			"type": "image",
+			"name": "arrow_png"
+		},
+		{
+			"url": "assets/arrow2.png",
+			"type": "image",
+			"name": "arrow2_png"
+		},
+		{
+			"name": "monster_2_json",
+			"type": "json",
+			"url": "assets/monster/monster_2.json"
+		},
+		{
+			"name": "monster_2_png",
+			"type": "image",
+			"url": "assets/monster/monster_2.png"
+		},
+		{
+			"name": "egret_png",
+			"type": "image",
+			"url": "assets/egret.png"
+		},
+		{
+			"name": "bird_png",
+			"type": "image",
+			"url": "assets/bird.png"
+		},
+		{
+			"name": "pig_png",
+			"type": "image",
+			"url": "assets/pig.png"
+		}
+	]
+}
