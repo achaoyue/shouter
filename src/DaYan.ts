@@ -83,6 +83,14 @@ public scoreLabel:eui.Label;
 	}
 
 	public bolm():void{
+		if(this.animation.score<0){
+			var sound:egret.Sound = RES.getRes("three_mp3");
+  			sound.play(0,1);
+		}else{
+			var sound:egret.Sound = RES.getRes("first_mp3");
+  			sound.play(0,1);
+		}
+		
 		
 		let num = Math.random()*10+10;
 		for(let i=0;i<num;i++){
