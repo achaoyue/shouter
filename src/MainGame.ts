@@ -45,13 +45,14 @@ public aginBtn:eui.Label;
 			this.daYanList.push(item);
 			this.addChild(item);
 		}
-		this.scoreNum+=0;
+		this.scoreNum=0;
 		this.score.text = ""+this.scoreNum;
 		setTimeout(this.end,1000*60);
 	}
 
 	public resize = ()=>{
         this.height = StageUtils.getSingtonInstance().getHeight();
+		this.width = StageUtils.getSingtonInstance().getWidth();
 		this.arrow.y = this.height - 10;
 		this.resetArrow();
     }
@@ -105,6 +106,7 @@ public aginBtn:eui.Label;
 
 		this.daYanList.forEach(element => {
 			if(this.testhint(element)){
+				element.bolm();
 				element.visible = false;
 				this.resetArrow();
 				this.scoreNum+=element.getScore();

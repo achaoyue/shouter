@@ -4,6 +4,8 @@ public scoreLabel:eui.Label;
 
 
 	private animation:DaYanAnimation;
+	private tween:egret.Tween;
+
 
 	public constructor() {
 		super();
@@ -25,10 +27,22 @@ public scoreLabel:eui.Label;
 	}
 
 	public init():void{
+		if(this.tween){
+			egret.Tween.pauseTweens(this);
+			this.tween = null;
+		}
 		this.animation = DaYanAnimation.getInstance(this.parent);
 		this.x = this.animation.startX;
 		this.y = this.animation.startY;
 		this.visible = true;
+
+		this.width = 140;
+        this.height = 140;
+        this.visible = !0;
+        this.anchorOffsetX = this.width / 2;
+        this.anchorOffsetY = this.height / 2;
+        this.alpha = 1;
+
 		if(this.animation.score<0){
 			this.pic.texture = RES.getRes("pig_png")
 		}else{
@@ -46,7 +60,16 @@ public scoreLabel:eui.Label;
 
 		if(this.x > this.parent.width || this.y < 0 || this.y > this.parent.height){
 			this.init();
+		}else if(new Date().getTime()>this.animation.life){
+			this.tween = egret.Tween.get(this).to({
+				width: 10,
+            	height: 10,
+            	alpha: 0
+			},1500).call(function(){
+				this.init();
+			})
 		}
+		
 		console.log("move")
 	}
 
@@ -56,8 +79,37 @@ public scoreLabel:eui.Label;
 	
 
 	public end():void{
-
 		this.removeEventListener(egret.Event.ENTER_FRAME,this.move,this);
+	}
+
+	public bolm():void{
+		
+		let num = Math.random()*10+10;
+		for(let i=0;i<num;i++){
+			let img:eui.Image = new eui.Image();
+			img.texture = this.pic.texture;
+			img.x = this.x;
+			img.y = this.y;
+			img.width = this.width;
+			img.height = this.height;
+			img.anchorOffsetX = this.width / 2;
+            img.anchorOffsetY = this.height / 2;
+			this.parent.addChild(img);
+			
+			let r = Math.random()*500;
+			let angr = 2 * Math.random() * Math.PI;
+			egret.Tween.get(img).to({
+                x: Math.cos(angr) * r + this.x,
+                y: Math.sin(angr) * r + this.y,
+                alpha: 0,
+                width: 20,
+                height: 20,
+                rotation: 360 * Math.random()
+            },
+            600, egret.Ease.sineInOut).call(function() {
+                this.parent.removeChild(this);
+            })
+		}
 	}
 
 	
@@ -69,14 +121,16 @@ class DaYanAnimation{
 	public speed:number;
 	public rotation:number;//角度
 	public score:number;
+	public life:number;
 
 	public static getInstance(ctx:egret.DisplayObject):DaYanAnimation{
 		let animation = new DaYanAnimation();
 		animation.startX = -10;
 		animation.startY = (ctx.height/2)*Math.random()+40;
 		animation.rotation = 180 * Math.random() - 90;
-		animation.speed = Math.random()*3+Math.random()*5;
+		animation.speed = Math.random()*8+5;
 		animation.score = Math.random()*100-50;
+		animation.life = Math.random()*1000*15+new Date().getTime();
 		return animation;
 	}
 }
