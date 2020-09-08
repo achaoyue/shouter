@@ -6,6 +6,7 @@
 	<e:Image id="arrow" source="arrow_png" width="162" height="162" anchorOffsetX="118" anchorOffsetY="115" rotation="45" y="1051" x="322"/>
 	<e:Image id="arrow_1" source="arrow2_png" x="322.12" y="1072.65" anchorOffsetX="21.13" width="162" anchorOffsetY="19.54" height="162" rotation="45" visible="false"/>
 	<e:Label id="score" text="0" y="23" horizontalCenter="0" textAlign="center"/>
-	<e:Label id="resultLabel" text="" x="1.33" y="478" anchorOffsetX="0" width="638" anchorOffsetY="0" height="90" size="60" textColor="0x166cf9" textAlign="center"/>
-	<e:Label id="aginBtn" text="再玩一次" x="259.88" y="710" textColor="0x34464f"/>
+	<e:Label id="resultLabel" text="" x="1.33" y="478" anchorOffsetX="0" width="638" anchorOffsetY="0" height="90" size="60" textColor="0x166cf9" textAlign="center" visible="false"/>
+	<e:Label id="aginBtn" text="再玩一次" x="259.88" y="710" textColor="0x34464f" visible="false"/>
+	<e:Image id="tostsImg" source="tosts_png" width="600" height="600" horizontalCenter="0" verticalCenter="0"/>
 </e:Skin>

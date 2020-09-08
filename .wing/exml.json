@@ -1,12 +1,15 @@
 {
-    "173f2805aee": {
-        "path": "MainGame.ts",
-        "class": "MainGame",
-        "parentPath": ""
-    },
-    "173f7525cd0": {
-        "path": "DaYan.ts",
-        "class": "DaYan",
-        "parentPath": ""
-    }
+  "173f2805aee": {
+    "path": "MainGame.ts",
+    "class": "MainGame",
+    "parentPath": ""
+  },
+  "173f7525cd0": {
+    "path": "DaYan.ts",
+    "class": "DaYan",
+    "parentPath": ""
+  },
+  "global": {
+    "globalAdsorbEnable": false
+  }
 }

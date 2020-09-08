@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,description_json,arrow_png,arrow2_png,bird_png,pig_png,second_mp3,first_mp3,three_mp3",
+			"keys": "bg_jpg,description_json,arrow_png,arrow2_png,bird_png,pig_png,second_mp3,first_mp3,three_mp3,tosts_png",
 			"name": "preload"
 		}
 	],
@@ -50,6 +50,11 @@
 			"name": "three_mp3",
 			"type": "sound",
 			"url": "assets/three.mp3"
+		},
+		{
+			"name": "tosts_png",
+			"type": "image",
+			"url": "assets/tosts.png"
 		}
 	]
 }

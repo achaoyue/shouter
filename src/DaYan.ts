@@ -19,7 +19,6 @@ public scoreLabel:eui.Label;
 
 	protected childrenCreated():void
 	{
-		console.log(this.x+","+this.y)
 		super.childrenCreated();
 		this.init();
 		this.addEventListener(egret.Event.ENTER_FRAME,this.move,this);
@@ -36,8 +35,8 @@ public scoreLabel:eui.Label;
 		this.y = this.animation.startY;
 		this.visible = true;
 
-		this.width = 140;
-        this.height = 140;
+		this.width = 70;
+        this.height = 70;
         this.visible = !0;
         this.anchorOffsetX = this.width / 2;
         this.anchorOffsetY = this.height / 2;
@@ -69,8 +68,6 @@ public scoreLabel:eui.Label;
 				this.init();
 			})
 		}
-		
-		console.log("move")
 	}
 
 	public getScore():number{
@@ -136,7 +133,7 @@ class DaYanAnimation{
 		animation.startX = -10;
 		animation.startY = (ctx.height/2)*Math.random()+40;
 		animation.rotation = 180 * Math.random() - 90;
-		animation.speed = Math.random()*8+5;
+		animation.speed = Math.random()*10+2;
 		animation.score = Math.random()*100-50;
 		animation.life = Math.random()*1000*15+new Date().getTime();
 		return animation;

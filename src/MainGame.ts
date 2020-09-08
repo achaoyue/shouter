@@ -2,6 +2,7 @@ class MainGame extends eui.Component implements  eui.UIComponent {
 
 public arrow:eui.Image;
 public arrow_1:eui.Image;
+public tostsImg:eui.Image;
 public score:eui.Label;
 public resultLabel:eui.Label;
 public aginBtn:eui.Label;
@@ -15,6 +16,8 @@ public aginBtn:eui.Label;
 	private arrow_1_move:boolean = false;
 	private daYanList : DaYan[] = [];
 	private scoreNum:number = 0;
+	private arrows:Array<eui.Image> = [];
+	private lock:boolean = false;
 
 	public constructor() {
 		super();
@@ -31,16 +34,20 @@ public aginBtn:eui.Label;
 
 	protected childrenCreated():void{
 		super.childrenCreated();
+		this.tostsImg.addEventListener(egret.TouchEvent.TOUCH_TAP,()=>{
+			this.tostsImg.visible = false;
+			this.init();
+		},this);
 		StageUtils.getSingtonInstance().startFullscreenAdaptation(640 , 1136, this.resize);
 		this.aginBtn.addEventListener(egret.TouchEvent.TOUCH_END,this.init,this);
-		this.init();
+		
 	}
 
 	private init():void{
 		this.aginBtn.visible = false;
 		this.resultLabel.visible=false;
 		this.addEventListener(egret.Event.ENTER_FRAME,this.onEnterFrame,this);
-		for(let i = 0;i<5;i++){
+		for(let i = 0;i<10;i++){
 			let item = new DaYan();
 			this.daYanList.push(item);
 			this.addChild(item);
@@ -58,17 +65,16 @@ public aginBtn:eui.Label;
     }
 
 	private toucheStart(e:egret.TouchEvent):void{
-		if(this.arrow_1_move == true){
-			//不允许射箭
-			return;
+		// if(this.arrow_1_move == true){
+		// 	//不允许射箭
+		// 	return;
+		// }
+		if(this.pointId == null){
+			this.pointId = e.touchPointID;
+			this.lastX = e.stageX;
+			this.lastY = e.stageY;
+			this.lastRotation = this.arrow.rotation;
 		}
-		if(this.pointId != null){
-			return;
-		}
-		this.pointId = e.touchPointID;
-		this.lastX = e.stageX;
-		this.lastY = e.stageY;
-		this.lastRotation = this.arrow.rotation;
 	}
 
 	private toucheMove(e:egret.TouchEvent):void{
@@ -77,43 +83,64 @@ public aginBtn:eui.Label;
 		}
 		let currentX = e.stageX;
 		let length = currentX - this.lastX;
-		 this.arrow.rotation = length/this.width*180 + this.lastRotation;
-		 this.arrow_1.rotation = this.arrow.rotation;
+		this.arrow.rotation = length/this.width*180 + this.lastRotation;
+		//  this.arrow_1.rotation = this.arrow.rotation;
 	}
 
 	private toucheEnd(e:egret.TouchEvent):void{
-		if(this.pointId != e.touchPointID){
-			return;
+		if(this.pointId == e.touchPointID){
+			this.pointId = null;
 		}
-		this.pointId = null;
-		this.arrow_1_move = true;
-		this.arrow_1.visible = true;
-		console.log(this.arrow.rotation)
+		this.fire();
 	}
 
+	private fire(){
+		let arrow = new eui.Image();
+		arrow.texture = RES.getRes("arrow2_png");
+		arrow.rotation = this.arrow.rotation;
+		arrow.x = this.arrow.x;
+		arrow.y = this.arrow.y;
+		arrow.width=140;
+		arrow.height = 140;
+		arrow.visible = true;
+		this.arrows.push(arrow);
+		this.addChild(arrow);
+	}
 
 	private onEnterFrame(e:egret.Event):void{
-		if(!this.arrow_1_move){
-			return;
-		}
+		// if(!this.arrow_1_move){
+		// 	return;
+		// }
 
-		this.arrow_1.x = this.arrow_1.x + Math.cos((this.arrow.rotation-135)/180*Math.PI)*50
-		this.arrow_1.y = this.arrow_1.y + Math.sin((this.arrow.rotation-135)/180*Math.PI)*50
+		for(let i = this.arrows.length-1;i>=0;i--){
+			let arrowItem = this.arrows[i];
 
-		if(this.arrow_1.x < 0 || this.arrow_1.x > this.width || this.arrow_1.y < 0 || this.arrow_1.y > this.height){
-			this.resetArrow();
-		}
+			arrowItem.x = arrowItem.x + Math.cos((arrowItem.rotation-135)/180*Math.PI)*50
+			arrowItem.y = arrowItem.y + Math.sin((arrowItem.rotation-135)/180*Math.PI)*50
 
-		this.daYanList.forEach(element => {
-			if(this.testhint(element)){
-				element.bolm();
-				element.visible = false;
-				this.resetArrow();
-				this.scoreNum+=element.getScore();
-				this.score.text = parseInt(""+this.scoreNum)+"";
-				element.init();
+			if(arrowItem.x < 0 || arrowItem.x > this.width || arrowItem.y < 0 || arrowItem.y > this.height){
+				this.arrows.splice(i,1);
+				arrowItem.parent && arrowItem.parent.removeChild(arrowItem);
+				return;
 			}
-		});
+
+			let hit = false;
+			this.daYanList.forEach(element => {
+
+				if(this.testhint(element,arrowItem)){
+					element.bolm();
+					element.visible = false;
+					hit = true;
+					this.scoreNum+=element.getScore();
+					this.score.text = parseInt(""+this.scoreNum)+"";
+					element.init();
+				}
+			});
+			if(hit){
+				this.arrows.splice(i,1);
+				arrowItem.parent && arrowItem.parent.removeChild(arrowItem);
+			}
+		}
 
 	}
 
@@ -129,6 +156,11 @@ public aginBtn:eui.Label;
 		this.daYanList = [];
 		this.resetArrow();
 		this.aginBtn.visible = true;
+		this.arrows.forEach(e=>{
+			e.parent && e.parent.removeChild(e);
+			
+		})
+		this.arrows = [];
 	}
 
 	private resetArrow():void{
@@ -139,8 +171,8 @@ public aginBtn:eui.Label;
 		this.arrow_1.rotation = this.arrow.rotation;
 	}
 	
-	private testhint(dayan:DaYan):boolean{
-		return dayan.hitTestPoint(this.arrow_1.x,this.arrow_1.y, true);
+	private testhint(dayan:DaYan,arrowItem:eui.Image):boolean{
+		return dayan.pic.hitTestPoint(arrowItem.x,arrowItem.y, false);
 	}
 	
 }
