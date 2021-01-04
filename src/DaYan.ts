@@ -31,6 +31,9 @@ public scoreLabel:eui.Label;
 			this.tween = null;
 		}
 		this.animation = DaYanAnimation.getInstance(this.parent);
+		if(this.animation == null){
+			return;
+		}
 		this.x = this.animation.startX;
 		this.y = this.animation.startY;
 		this.visible = true;
@@ -57,7 +60,7 @@ public scoreLabel:eui.Label;
 		this.pic.rotation = this.rotation+1;
 
 
-		if(this.x > this.parent.width || this.y < 0 || this.y > this.parent.height){
+		if(Math.abs(this.x-this.animation.startX) > this.parent.width || this.y < 0 || this.y > this.parent.height){
 			this.init();
 		}else if(new Date().getTime()>this.animation.life){
 			this.tween = egret.Tween.get(this).to({
@@ -129,10 +132,16 @@ class DaYanAnimation{
 	public life:number;
 
 	public static getInstance(ctx:egret.DisplayObject):DaYanAnimation{
+		if(!ctx){
+			return null;
+		}
 		let animation = new DaYanAnimation();
-		animation.startX = -10;
+		animation.startX = Math.random()>0.5?-10 : ctx.width+10;
 		animation.startY = (ctx.height/2)*Math.random()+40;
 		animation.rotation = 180 * Math.random() - 90;
+		if(animation.startX>0){
+			animation.rotation = 180 * Math.random() + 90;
+		}
 		animation.speed = Math.random()*10+2;
 		animation.score = Math.random()*100-50;
 		animation.life = Math.random()*1000*15+new Date().getTime();

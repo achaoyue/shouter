@@ -26,9 +26,10 @@ public aginBtn:eui.Label;
 	protected partAdded(partName:string,instance:any):void
 	{
 		super.partAdded(partName,instance);
-		this.parent.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.toucheStart, this);
-		this.parent.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.toucheMove, this);
-		this.parent.addEventListener(egret.TouchEvent.TOUCH_END, this.toucheEnd, this);
+		// this.parent.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.toucheStart, this);
+		// this.parent.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.toucheMove, this);
+		// this.parent.addEventListener(egret.TouchEvent.TOUCH_END, this.toucheEnd, this);
+		this.parent.addEventListener(egret.TouchEvent.TOUCH_TAP, this.toucheTap, this);
 	}
 
 
@@ -44,6 +45,8 @@ public aginBtn:eui.Label;
 	}
 
 	private init():void{
+		this.arrows = [];
+		this.daYanList = [];
 		this.aginBtn.visible = false;
 		this.resultLabel.visible=false;
 		this.addEventListener(egret.Event.ENTER_FRAME,this.onEnterFrame,this);
@@ -105,6 +108,11 @@ public aginBtn:eui.Label;
 		arrow.visible = true;
 		this.arrows.push(arrow);
 		this.addChild(arrow);
+	}
+
+	private toucheTap(e:egret.TouchEvent){
+		this.arrow.rotation = Math.atan2(e.stageY-this.arrow.y,e.stageX-this.arrow.x)*180/Math.PI+135;
+		this.fire();
 	}
 
 	private onEnterFrame(e:egret.Event):void{
